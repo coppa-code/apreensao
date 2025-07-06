@@ -1284,6 +1284,14 @@
                     <textarea id="observations" rows="4" placeholder="Detalhes da operação, estado dos animais, circunstâncias especiais..."></textarea>
                 </div>
                 
+                <div class="form-group">
+                    <label for="photos-link">📸 Link das Fotos da Operação:</label>
+                    <input type="url" id="photos-link" placeholder="https://drive.google.com/... ou outro link para fotos">
+                    <small style="color: var(--text-light); font-size: 0.85em; margin-top: 5px; display: block;">
+                        💡 Cole aqui o link do Google Drive, Dropbox ou outro serviço onde as fotos estão armazenadas
+                    </small>
+                </div>
+                
                 <div style="display: flex; gap: 15px; margin-top: 30px;">
                     <button type="button" class="btn" onclick="app.ui.closeModal()">
                         ❌ Cancelar
@@ -1793,7 +1801,8 @@
                     animals: [...app.animals.currentAnimals],
                     materials: materials,
                     responsible: document.getElementById('responsible').value,
-                    observations: document.getElementById('observations').value
+                    observations: document.getElementById('observations').value,
+                    photosLink: document.getElementById('photos-link').value
                 };
                 
                 try {
@@ -1833,6 +1842,7 @@
                 document.getElementById('city').value = apreensao.city;
                 document.getElementById('responsible').value = apreensao.responsible;
                 document.getElementById('observations').value = apreensao.observations || '';
+                document.getElementById('photos-link').value = apreensao.photosLink || '';
                 
                 // Update neighborhoods and set the neighborhood
                 app.location.updateNeighborhoods();
@@ -2333,7 +2343,14 @@
                 const timeline = document.getElementById('timeline');
                 const filteredApreensoes = app.data.getFilteredData();
                 
-                timeline.innerHTML = filteredApreensoes.map((apreensao, index) => {
+                // Sort by date and time in descending order (most recent first)
+                const sortedApreensoes = filteredApreensoes.sort((a, b) => {
+                    const dateTimeA = new Date(`${a.date}T${a.time}`);
+                    const dateTimeB = new Date(`${b.date}T${b.time}`);
+                    return dateTimeB - dateTimeA; // Descending order
+                });
+                
+                timeline.innerHTML = sortedApreensoes.map((apreensao, index) => {
                     // Calculate total animals for this operation
                     const totalAnimals = apreensao.animals.reduce((sum, animal) => sum + animal.quantity, 0);
                     const totalMaterials = apreensao.materials.reduce((sum, material) => sum + material.quantity, 0);
@@ -2389,6 +2406,27 @@
                                 </div>
                             ` : ''}
                             
+                            ${apreensao.photosLink ? `
+                                <div style="margin-top: 15px; padding: 15px; background: rgba(116, 185, 255, 0.1); border-radius: 12px; border-left: 4px solid #74b9ff; border: 1px solid rgba(116, 185, 255, 0.2);">
+                                    <strong style="color: white;">📸 Fotos da Operação:</strong>
+                                    <div style="margin-top: 10px;">
+                                        <a href="${apreensao.photosLink}" target="_blank" rel="noopener noreferrer" 
+                                           style="display: inline-flex; align-items: center; gap: 8px; background: var(--info-gradient); color: white; 
+                                                  padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: 600; 
+                                                  box-shadow: var(--shadow-light); transition: var(--transition);"
+                                           onmouseover="this.style.transform='translateY(-2px) scale(1.05)'"
+                                           onmouseout="this.style.transform='translateY(0) scale(1)'">
+                                            <span>🔗</span>
+                                            <span>Visualizar Fotos</span>
+                                            <span style="font-size: 0.8em; opacity: 0.8;">↗</span>
+                                        </a>
+                                        <div style="margin-top: 5px; font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">
+                                            ${this.getDomainFromUrl(apreensao.photosLink)}
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
                             <div style="margin-top: 20px; display: flex; gap: 10px;">
                                 <button class="btn btn-warning" onclick="app.form.editApreensao('${apreensao.id}')" style="padding: 8px 20px; font-size: 0.9em;">
                                     ✏️ Editar
@@ -2419,6 +2457,21 @@
                 const [year, month, day] = dateString.split('-');
                 return `${day}/${month}/${year}`;
             }
+
+            getDomainFromUrl(url) {
+                if (!url) return '';
+                try {
+                    const domain = new URL(url).hostname;
+                    if (domain.includes('drive.google.com')) return '📁 Google Drive';
+                    if (domain.includes('dropbox.com')) return '📦 Dropbox';
+                    if (domain.includes('onedrive.live.com')) return '☁️ OneDrive';
+                    if (domain.includes('icloud.com')) return '☁️ iCloud';
+                    if (domain.includes('mega.nz')) return '🔒 MEGA';
+                    return `🌐 ${domain}`;
+                } catch {
+                    return '🔗 Link externo';
+                }
+            }
         }
 
         class FilterManager {
@@ -2440,7 +2493,7 @@
             }
 
             generateCSV() {
-                let csv = 'Data,Hora,Cidade,Bairro,Responsável,Animais,Materiais,Observações\n';
+                let csv = 'Data,Hora,Cidade,Bairro,Responsável,Animais,Materiais,Observações,Link das Fotos\n';
                 
                 app.data.apreensoes.forEach(apreensao => {
                     const animals = apreensao.animals
@@ -2451,7 +2504,7 @@
                         .map(m => `${m.type} (${m.quantity})`)
                         .join('; ');
                     
-                    csv += `${apreensao.date},${apreensao.time},"${apreensao.city}","${apreensao.neighborhood}","${apreensao.responsible}","${animals}","${materials}","${apreensao.observations || ''}"\n`;
+                    csv += `${apreensao.date},${apreensao.time},"${apreensao.city}","${apreensao.neighborhood}","${apreensao.responsible}","${animals}","${materials}","${apreensao.observations || ''}","${apreensao.photosLink || ''}"\n`;
                 });
                 
                 return csv;
