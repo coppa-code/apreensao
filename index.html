@@ -1088,7 +1088,7 @@
 
     <div class="header">
         <h1>🚨 APREENSÕES DE ANIMAIS - COPPA</h1>
-        <p>Controle de Apreensões de Animais Silvestres</p>
+        <p>Sistema Avançado de Controle de Apreensões de Animais Silvestres</p>
     </div>
 
     <div class="container">
@@ -1508,6 +1508,13 @@
                     
                     // Reset neighborhood
                     document.getElementById('neighborhood').innerHTML = '<option value="">Selecione a cidade primeiro...</option>';
+                    document.getElementById('neighborhood-manual').value = '';
+                    document.getElementById('manual-neighborhood').checked = false;
+                    app.location.isManualNeighborhood = false;
+                    document.getElementById('neighborhood').style.display = 'block';
+                    document.getElementById('neighborhood-manual').style.display = 'none';
+                    document.getElementById('neighborhood').required = true;
+                    document.getElementById('neighborhood-manual').required = false;
                 }
             }
 
@@ -1832,7 +1839,13 @@
                 
                 // Use requestAnimationFrame to ensure DOM is updated
                 requestAnimationFrame(() => {
-                    document.getElementById('neighborhood').value = apreensao.neighborhood;
+                    if (app.location.isManualNeighborhood) {
+                        document.getElementById('manual-neighborhood').checked = true;
+                        app.location.toggleManualNeighborhood();
+                        document.getElementById('neighborhood-manual').value = apreensao.neighborhood;
+                    } else {
+                        document.getElementById('neighborhood').value = apreensao.neighborhood;
+                    }
                 });
                 
                 // Load materials
@@ -1938,19 +1951,36 @@
                                 labels: {
                                     padding: 20,
                                     font: { size: 12, weight: '600' },
-                                    color: '#2d3436',
+                                    color: '#f8fafc',
                                     usePointStyle: true,
-                                    pointStyle: 'circle'
+                                    pointStyle: 'circle',
+                                    generateLabels: function(chart) {
+                                        const data = chart.data;
+                                        const total = data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+                                        
+                                        return data.labels.map((label, index) => {
+                                            const value = data.datasets[0].data[index];
+                                            const percentage = ((value / total) * 100).toFixed(1);
+                                            
+                                            return {
+                                                text: `${label}: ${value} (${percentage}%)`,
+                                                fillStyle: data.datasets[0].backgroundColor[index],
+                                                strokeStyle: data.datasets[0].backgroundColor[index],
+                                                lineWidth: 0,
+                                                pointStyle: 'circle'
+                                            };
+                                        });
+                                    }
                                 }
                             },
                             tooltip: {
-                                backgroundColor: 'rgba(45, 52, 54, 0.9)',
+                                backgroundColor: 'rgba(45, 52, 54, 0.95)',
                                 titleColor: '#fff',
                                 bodyColor: '#fff',
                                 borderColor: 'rgba(255, 255, 255, 0.2)',
                                 borderWidth: 1,
-                                cornerRadius: 10,
-                                displayColors: false,
+                                cornerRadius: 12,
+                                displayColors: true,
                                 callbacks: {
                                     label: (context) => {
                                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
@@ -1958,13 +1988,72 @@
                                         return `${context.label}: ${context.parsed} animais (${percentage}%)`;
                                     }
                                 }
+                            },
+                            datalabels: {
+                                display: true,
+                                color: '#fff',
+                                font: {
+                                    weight: 'bold',
+                                    size: 12
+                                },
+                                formatter: (value, context) => {
+                                    const total = context.dataset.data.reduce((sum, val) => sum + val, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return percentage > 5 ? `${value}\n(${percentage}%)` : '';
+                                },
+                                textAlign: 'center'
                             }
                         },
                         animation: {
                             duration: 2000,
                             easing: 'easeInOutQuart'
+                        },
+                        layout: {
+                            padding: {
+                                top: 20,
+                                bottom: 20
+                            }
                         }
-                    }
+                    },
+                    plugins: [{
+                        afterDatasetsDraw: function(chart) {
+                            const ctx = chart.ctx;
+                            const data = chart.data.datasets[0].data;
+                            const total = data.reduce((sum, value) => sum + value, 0);
+                            
+                            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                                const meta = chart.getDatasetMeta(datasetIndex);
+                                
+                                meta.data.forEach((arc, index) => {
+                                    const value = data[index];
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    
+                                    // Only show labels for slices larger than 5%
+                                    if (percentage > 5) {
+                                        const centerPoint = arc.tooltipPosition();
+                                        
+                                        ctx.save();
+                                        ctx.textAlign = 'center';
+                                        ctx.textBaseline = 'middle';
+                                        ctx.fillStyle = '#fff';
+                                        ctx.font = 'bold 11px Inter';
+                                        ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+                                        ctx.lineWidth = 2;
+                                        
+                                        // Draw text with outline
+                                        ctx.strokeText(`${value}`, centerPoint.x, centerPoint.y - 6);
+                                        ctx.fillText(`${value}`, centerPoint.x, centerPoint.y - 6);
+                                        
+                                        ctx.font = 'bold 9px Inter';
+                                        ctx.strokeText(`${percentage}%`, centerPoint.x, centerPoint.y + 6);
+                                        ctx.fillText(`${percentage}%`, centerPoint.x, centerPoint.y + 6);
+                                        
+                                        ctx.restore();
+                                    }
+                                });
+                            });
+                        }
+                    }]
                 });
             }
 
