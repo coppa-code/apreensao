@@ -1088,7 +1088,7 @@
 
     <div class="header">
         <h1>🚨 APREENSÕES DE ANIMAIS - COPPA</h1>
-        <p>Sistema Avançado de Controle de Apreensões de Animais Silvestres</p>
+        <p>Controle de Apreensões de Animais Silvestres</p>
     </div>
 
     <div class="container">
@@ -2334,6 +2334,10 @@
                 const filteredApreensoes = app.data.getFilteredData();
                 
                 timeline.innerHTML = filteredApreensoes.map((apreensao, index) => {
+                    // Calculate total animals for this operation
+                    const totalAnimals = apreensao.animals.reduce((sum, animal) => sum + animal.quantity, 0);
+                    const totalMaterials = apreensao.materials.reduce((sum, material) => sum + material.quantity, 0);
+                    
                     return `
                         <div class="timeline-item" style="animation: fadeInUp 0.6s ease ${index * 0.1}s both;">
                             <div class="timeline-header">
@@ -2345,8 +2349,18 @@
                                 </div>
                             </div>
                             
-                            <div style="margin: 15px 0; font-weight: 600; color: white;">
-                                👮 Responsável: ${apreensao.responsible}
+                            <div style="margin: 15px 0; display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+                                <div style="font-weight: 600; color: white;">
+                                    👮 Responsável: ${apreensao.responsible}
+                                </div>
+                                <div style="background: var(--success-gradient); color: white; padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9em; box-shadow: var(--shadow-light);">
+                                    🦎 ${totalAnimals} ${totalAnimals === 1 ? 'Animal' : 'Animais'} Apreendido${totalAnimals === 1 ? '' : 's'}
+                                </div>
+                                ${totalMaterials > 0 ? `
+                                    <div style="background: var(--warning-gradient); color: white; padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9em; box-shadow: var(--shadow-light);">
+                                        🔗 ${totalMaterials} ${totalMaterials === 1 ? 'Material' : 'Materiais'}
+                                    </div>
+                                ` : ''}
                             </div>
                             
                             <div class="animal-list">
@@ -2367,7 +2381,7 @@
                             ` : ''}
                             
                             ${apreensao.observations ? `
-                                <div style="margin-top: 15px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border-left: 4px solid #667eea;">
+                                <div style="margin-top: 15px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border-left: 4px solid #dc2626;">
                                     <strong style="color: white;">📝 Observações:</strong>
                                     <div style="margin-top: 8px; color: rgba(255, 255, 255, 0.9); font-style: italic;">
                                         ${apreensao.observations}
@@ -2445,25 +2459,31 @@
 
             generatePDF() {
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
+                const doc = new jsPDF('p', 'mm', 'a4');
+                
+                // Configure font encoding
+                doc.setFont('helvetica');
                 
                 // Header with gradient effect
-                doc.setFillColor(102, 126, 234);
+                doc.setFillColor(220, 38, 38);
                 doc.rect(0, 0, 210, 45, 'F');
                 
                 doc.setFontSize(24);
                 doc.setTextColor(255, 255, 255);
-                doc.setFont(undefined, 'bold');
-                doc.text('COPPA - Sistema de Apreensões', 105, 20, { align: 'center' });
+                doc.setFont('helvetica', 'bold');
+                doc.text('COPPA - Sistema de Apreensoes', 105, 20, { align: 'center' });
                 
                 doc.setFontSize(14);
-                doc.setFont(undefined, 'normal');
-                doc.text('Relatório Completo de Apreensões de Animais Silvestres', 105, 32, { align: 'center' });
+                doc.setFont('helvetica', 'normal');
+                doc.text('Relatorio Completo de Apreensoes de Animais Silvestres', 105, 32, { align: 'center' });
                 
                 // Date and stats
                 doc.setFontSize(10);
                 doc.setTextColor(0, 0, 0);
-                doc.text(`Gerado em: ${app.dashboard.formatDate(new Date().toISOString().split('T')[0])} às ${new Date().toTimeString().slice(0, 5)}`, 20, 55);
+                const currentDate = new Date();
+                const dateStr = `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
+                const timeStr = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
+                doc.text(`Gerado em: ${dateStr} as ${timeStr}`, 20, 55);
                 
                 // Summary stats
                 const totalAnimals = app.data.apreensoes.reduce((sum, a) => 
@@ -2474,45 +2494,115 @@
                 );
                 
                 doc.setFontSize(16);
-                doc.setFont(undefined, 'bold');
-                doc.text('📊 Resumo Executivo:', 20, 70);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Resumo Executivo:', 20, 70);
                 
                 doc.setFontSize(12);
-                doc.setFont(undefined, 'normal');
-                doc.text(`• Total de Operações Realizadas: ${app.data.apreensoes.length}`, 25, 80);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`• Total de Operacoes Realizadas: ${app.data.apreensoes.length}`, 25, 80);
                 doc.text(`• Total de Animais Apreendidos: ${totalAnimals}`, 25, 88);
                 doc.text(`• Total de Materiais Apreendidos: ${totalMaterials}`, 25, 96);
-                doc.text(`• Período de Análise: ${app.data.apreensoes.length > 0 ? 'Últimas ' + app.data.apreensoes.length + ' operações' : 'Sem dados'}`, 25, 104);
+                doc.text(`• Periodo de Analise: ${app.data.apreensoes.length > 0 ? 'Ultimas ' + app.data.apreensoes.length + ' operacoes' : 'Sem dados'}`, 25, 104);
                 
-                // Table with enhanced styling
+                // Function to clean text
+                const cleanText = (text) => {
+                    if (!text) return '';
+                    return text
+                        .replace(/[áàâãä]/g, 'a')
+                        .replace(/[éèêë]/g, 'e')
+                        .replace(/[íìîï]/g, 'i')
+                        .replace(/[óòôõö]/g, 'o')
+                        .replace(/[úùûü]/g, 'u')
+                        .replace(/[ç]/g, 'c')
+                        .replace(/[ÁÀÂÃÄ]/g, 'A')
+                        .replace(/[ÉÈÊË]/g, 'E')
+                        .replace(/[ÍÌÎÏ]/g, 'I')
+                        .replace(/[ÓÒÔÕÖ]/g, 'O')
+                        .replace(/[ÚÙÛÜ]/g, 'U')
+                        .replace(/[Ç]/g, 'C')
+                        .replace(/[ñ]/g, 'n')
+                        .replace(/[Ñ]/g, 'N')
+                        .replace(/[°]/g, 'o')
+                        .replace(/[ª]/g, 'a')
+                        .replace(/[\u2013\u2014]/g, '-') // em dash, en dash
+                        .replace(/[\u2018\u2019]/g, "'") // smart quotes
+                        .replace(/[\u201C\u201D]/g, '"') // smart double quotes
+                        .replace(/[^\x20-\x7E\u00A0-\u00FF]/g, ''); // remove other special chars
+                };
+                
+                // Table with enhanced styling and cleaned text
                 const tableData = app.data.apreensoes.slice(0, 20).map(a => [
                     app.dashboard.formatDate(a.date),
                     a.time,
-                    `${a.city} - ${a.neighborhood}`,
-                    a.animals.map(an => `${an.species} (${an.quantity})`).join(', '),
-                    a.responsible
+                    cleanText(`${a.city} - ${a.neighborhood}`),
+                    cleanText(a.animals.map(an => `${an.species} (${an.quantity})`).join(', ')),
+                    cleanText(a.responsible)
                 ]);
                 
                 doc.autoTable({
-                    head: [['📅 Data', '⏰ Hora', '📍 Local', '🦎 Animais', '👮 Responsável']],
+                    head: [['Data', 'Hora', 'Local', 'Animais', 'Responsavel']],
                     body: tableData,
                     startY: 115,
                     styles: { 
                         fontSize: 9,
-                        cellPadding: 4,
+                        cellPadding: 5,
                         lineColor: [200, 200, 200],
-                        lineWidth: 0.5
+                        lineWidth: 0.5,
+                        font: 'helvetica',
+                        halign: 'left',
+                        valign: 'middle',
+                        overflow: 'linebreak'
                     },
                     headStyles: { 
-                        fillColor: [102, 126, 234],
+                        fillColor: [220, 38, 38],
                         textColor: [255, 255, 255],
-                        fontStyle: 'bold'
+                        fontStyle: 'bold',
+                        font: 'helvetica',
+                        halign: 'center'
                     },
                     alternateRowStyles: {
                         fillColor: [248, 249, 250]
                     },
-                    margin: { left: 20, right: 20 }
+                    margin: { left: 15, right: 15 },
+                    columnStyles: {
+                        0: { cellWidth: 28, halign: 'center' }, // Data - aumentada
+                        1: { cellWidth: 18, halign: 'center' }, // Hora
+                        2: { cellWidth: 42, halign: 'left' },   // Local - reduzida
+                        3: { cellWidth: 60, halign: 'left' },   // Animais - reduzida
+                        4: { cellWidth: 32, halign: 'left' }    // Responsavel - aumentada
+                    },
+                    tableWidth: 'wrap'
                 });
+                
+                // Add statistics section if there's space
+                let finalY = doc.lastAutoTable.finalY + 15;
+                
+                if (finalY < 250) {
+                    doc.setFontSize(14);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Estatisticas por Tipo de Animal:', 20, finalY);
+                    
+                    const animalStats = {};
+                    app.data.apreensoes.forEach(apreensao => {
+                        apreensao.animals.forEach(animal => {
+                            animalStats[animal.type] = (animalStats[animal.type] || 0) + animal.quantity;
+                        });
+                    });
+                    
+                    const sortedAnimals = Object.entries(animalStats)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 8);
+                    
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'normal');
+                    finalY += 10;
+                    
+                    sortedAnimals.forEach(([type, count]) => {
+                        const percentage = ((count / totalAnimals) * 100).toFixed(1);
+                        doc.text(`• ${cleanText(type)}: ${count} animais (${percentage}%)`, 25, finalY);
+                        finalY += 6;
+                    });
+                }
                 
                 // Footer
                 const pageCount = doc.internal.getNumberOfPages();
@@ -2520,12 +2610,14 @@
                     doc.setPage(i);
                     doc.setFontSize(8);
                     doc.setTextColor(128, 128, 128);
-                    doc.text(`Página ${i} de ${pageCount} | COPPA - Sistema de Controle de Apreensões`, 105, 290, { align: 'center' });
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(`Pagina ${i} de ${pageCount} | COPPA - Sistema de Controle de Apreensoes`, 105, 290, { align: 'center' });
                 }
                 
-                doc.save(`relatorio_coppa_${new Date().toISOString().split('T')[0]}.pdf`);
+                const fileName = `relatorio_coppa_${dateStr.replace(/\//g, '-')}.pdf`;
+                doc.save(fileName);
                 
-                app.ui.showToast('Relatório PDF gerado com sucesso!', 'success');
+                app.ui.showToast('Relatorio PDF gerado com sucesso!', 'success');
             }
         }
 
