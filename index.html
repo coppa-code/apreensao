@@ -566,11 +566,94 @@
             animation: slideInScale 0.4s ease;
             box-shadow: var(--shadow-light);
             transition: var(--transition);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .animal-tag:hover {
             transform: translateY(-2px) scale(1.05);
             box-shadow: var(--shadow-medium);
+        }
+
+        /* Mobile Override for Animal List */
+        @media (max-width: 768px) {
+            .animal-list {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 8px !important;
+                background: rgba(255, 255, 255, 0.03) !important;
+                padding: 12px !important;
+                border-radius: 10px !important;
+                margin: 12px 0 !important;
+                border-left: 3px solid rgba(59, 130, 246, 0.6) !important;
+            }
+            
+            .animal-list::before {
+                content: "🦎 Animais Apreendidos:";
+                display: block !important;
+                font-weight: 600;
+                color: white;
+                margin-bottom: 10px;
+                font-size: 0.85em;
+                padding-bottom: 6px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                grid-column: 1 / -1;
+            }
+            
+            .animal-tag {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                padding: 8px 10px !important;
+                font-size: 0.75em !important;
+                border-radius: 6px !important;
+                margin: 0 !important;
+                background: rgba(71, 85, 105, 0.4) !important;
+                line-height: 1.2 !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                border: 1px solid rgba(148, 163, 184, 0.2) !important;
+                transition: all 0.2s ease !important;
+                flex-wrap: nowrap !important;
+                gap: 6px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                min-height: 32px !important;
+            }
+            
+            .animal-tag:hover {
+                background: rgba(71, 85, 105, 0.6) !important;
+                transform: translateY(-1px) !important;
+                border-color: rgba(148, 163, 184, 0.4) !important;
+            }
+            
+            .animal-icon {
+                flex-shrink: 0 !important;
+                font-size: 0.9em !important;
+            }
+            
+            .animal-species-name {
+                flex: 1 !important;
+                text-align: left !important;
+                font-weight: 500 !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                white-space: nowrap !important;
+                color: #f1f5f9 !important;
+            }
+            
+            .animal-quantity {
+                background: rgba(59, 130, 246, 0.3) !important;
+                color: #bfdbfe !important;
+                padding: 2px 6px !important;
+                border-radius: 8px !important;
+                font-weight: 600 !important;
+                font-size: 0.85em !important;
+                flex-shrink: 0 !important;
+                margin-left: 4px !important;
+                border: 1px solid rgba(59, 130, 246, 0.4) !important;
+            }
         }
 
         @keyframes slideInScale {
@@ -1008,62 +1091,471 @@
             
             .stats-grid { 
                 grid-template-columns: 1fr; 
+                gap: 15px;
+            }
+            
+            .header {
+                margin: 15px;
+                padding: 25px 20px;
             }
             
             .header h1 { 
-                font-size: 2.5em; 
+                font-size: 2.2em; 
+                line-height: 1.2;
+            }
+            
+            .header p {
+                font-size: 1.1em;
             }
             
             .stat-number { 
-                font-size: 2.8em; 
+                font-size: 2.5em; 
             }
             
             .modal-content { 
                 width: 95%; 
-                padding: 25px; 
+                padding: 25px 20px; 
                 margin: 20px auto;
             }
             
             .control-panel {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 15px;
+            }
+            
+            <div class="control-panel > div:first-child {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 10px;
             }
             
             .floating-action {
-                width: 70px;
-                height: 70px;
-                font-size: 2em;
-                bottom: 30px;
-                right: 30px;
+                width: 65px;
+                height: 65px;
+                font-size: 1.8em;
+                bottom: 25px;
+                right: 25px;
             }
             
             .timeline-header {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .timeline-date {
+                font-size: 1em;
+            }
+            
+            .timeline-location {
+                font-size: 0.9em;
+            }
+            
+            .card {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+            }
+            
+            .chart-card {
+                padding: 20px 15px;
+                height: 350px;
+            }
+            
+            .chart-title {
+                font-size: 1.3em;
+                margin-bottom: 15px;
+            }
+            
+            .animal-list {
+                gap: 8px;
+            }
+            
+            .animal-tag {
+                padding: 8px 12px;
+                font-size: 0.85em;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 15px;
+            }
+            
+            .filter-group select {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            .location-stats {
+                padding: 20px 15px;
+            }
+            
+            .location-item {
+                padding: 12px 0;
+                flex-wrap: wrap;
+                gap: 8px;
             }
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 15px;
+                padding: 10px;
             }
             
             .header {
-                margin: 15px;
-                padding: 25px;
+                margin: 10px;
+                padding: 20px 15px;
             }
             
             .header h1 {
-                font-size: 2em;
+                font-size: 1.8em;
+                margin-bottom: 8px;
+            }
+            
+            .header p {
+                font-size: 1em;
             }
             
             .card {
-                padding: 20px;
+                padding: 15px 12px;
+                margin-bottom: 15px;
+                border-radius: 15px;
+            }
+            
+            .card h3 {
+                font-size: 1.2em;
+                margin-bottom: 15px;
             }
             
             .stat-card {
-                padding: 25px 15px;
+                padding: 20px 15px;
             }
+            
+            .stat-icon {
+                font-size: 3em;
+                margin-bottom: 8px;
+            }
+            
+            .stat-number {
+                font-size: 2.2em;
+                margin-bottom: 8px;
+            }
+            
+            .stat-label {
+                font-size: 0.9em;
+                letter-spacing: 1px;
+            }
+            
+            .chart-card {
+                padding: 15px 12px;
+                height: 320px;
+            }
+            
+            .chart-title {
+                font-size: 1.1em;
+                margin-bottom: 12px;
+            }
+            
+            .timeline-item {
+                padding: 20px 15px;
+                margin-bottom: 15px;
+                border-radius: 15px;
+            }
+            
+            .timeline-header {
+                margin-bottom: 12px;
+            }
+            
+            .timeline-date {
+                font-size: 0.95em;
+                font-weight: 700;
+            }
+            
+            .timeline-location {
+                font-size: 0.85em;
+            }
+            
+            .animal-list {
+                gap: 6px;
+                margin-bottom: 12px;
+                display: flex !important;
+                flex-wrap: wrap !important;
+            }
+            
+            .animal-tag {
+                padding: 4px 8px;
+                font-size: 0.75em;
+                border-radius: 15px;
+                line-height: 1.2;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            
+            .control-panel > div:first-child {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.9em;
+                margin: 4px;
+            }
+            
+            .modal-content {
+                width: 98%;
+                padding: 20px 15px;
+                margin: 10px auto;
+                border-radius: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .form-group label {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 12px 15px;
+                font-size: 16px; /* Prevents zoom on iOS */
+                border-radius: 10px;
+            }
+            
+            .material-item {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+            }
+            
+            .material-item input {
+                margin-bottom: 0;
+            }
+            
+            .floating-action {
+                width: 60px;
+                height: 60px;
+                font-size: 1.6em;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .sync-status {
+                bottom: 90px;
+                right: 20px;
+                padding: 10px 15px;
+                font-size: 0.85em;
+            }
+            
+            .toast-container {
+                top: 20px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+            
+            .toast {
+                padding: 15px 18px;
+                margin-bottom: 10px;
+                border-radius: 10px;
+            }
+            
+            .location-stats {
+                padding: 15px 12px;
+            }
+            
+            .location-item {
+                padding: 10px 0;
+                font-size: 0.9em;
+            }
+            
+            .location-count {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+            
+            /* Mobile-specific improvements */
+            .timeline-item > div[style*="display: flex"] {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 10px !important;
+            }
+            
+            .timeline-item > div[style*="display: flex"] > div {
+                width: 100% !important;
+            }
+            
+            /* Photo link improvements for mobile */
+            .timeline-item a[href] {
+                display: flex !important;
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 12px 15px !important;
+                font-size: 0.9em !important;
+            }
+            
+            /* Observations and materials mobile styling */
+            .timeline-item > div[style*="padding: 15px"] {
+                padding: 12px !important;
+                margin-top: 12px !important;
+                border-radius: 10px !important;
+            }
+            
+            /* Better badge layout on mobile */
+            .timeline-item div[style*="background: var(--success-gradient)"],
+            .timeline-item div[style*="background: var(--warning-gradient)"] {
+                padding: 6px 12px !important;
+                font-size: 0.8em !important;
+                white-space: nowrap !important;
+            }
+        }
+
+        /* Ultra small screens */
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 1.6em;
+            }
+            
+            .stat-number {
+                font-size: 2em;
+            }
+            
+            .chart-card {
+                height: 280px;
+            }
+            
+            .timeline-item {
+                padding: 15px 10px;
+                margin-bottom: 15px;
+            }
+            
+            /* Single column for very small screens */
+            .animal-list {
+                grid-template-columns: 1fr !important;
+                gap: 6px !important;
+                padding: 10px !important;
+            }
+            
+            .animal-tag {
+                padding: 6px 8px !important;
+                font-size: 0.7em !important;
+                min-height: 28px !important;
+            }
+            
+            .animal-species-name {
+                font-size: 0.9em !important;
+            }
+            
+            .animal-quantity {
+                padding: 2px 5px !important;
+                font-size: 0.8em !important;
+            }
+            
+            /* Compact badges */
+            .timeline-item div[style*="background: var(--success-gradient)"],
+            .timeline-item div[style*="background: var(--warning-gradient)"] {
+                padding: 6px 12px !important;
+                font-size: 0.8em !important;
+                border-radius: 18px !important;
+                margin: 0 6px 8px 0 !important;
+            }
+            
+            /* Compact timeline content */
+            .timeline-date {
+                font-size: 0.9em;
+            }
+            
+            .timeline-location {
+                font-size: 0.8em;
+                line-height: 1.3;
+            }
+            
+            /* Compact sections */
+            .timeline-item > div[style*="padding: 15px"] {
+                padding: 12px !important;
+                margin-top: 12px !important;
+                font-size: 0.85em !important;
+            }
+            
+            /* Responsible person ultra compact */
+            .timeline-item div[style*="font-weight: 600"] {
+                font-size: 0.85em !important;
+                padding: 8px 12px !important;
+            }
+            
+            /* Photo button compact */
+            .timeline-item a[href] {
+                padding: 10px 12px !important;
+                font-size: 0.8em !important;
+            }
+        }
+        /* Supreme Dashboard Styles */
+        .collapsible-card { position: relative; transition: all 0.5s ease; }
+        .collapse-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .collapse-btn:hover { background: rgba(255,255,255,0.2); transform: rotate(180deg); }
+        .card-content { transition: all 0.5s ease; overflow: hidden; }
+        .card.collapsed .card-content { max-height: 0; opacity: 0; padding: 0; }
+        .card.collapsed { padding-bottom: 20px; }
+
+        /* Quick Actions */
+        .quick-actions {
+            position: fixed;
+            right: 20px;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+        .quick-action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: rgba(15,23,42,0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .quick-action-btn:hover {
+            transform: translateX(-5px);
+            background: rgba(220,38,38,0.8);
+            box-shadow: 0 5px 20px rgba(220,38,38,0.4);
+        }
+
+        @media (max-width: 768px) {
+            .quick-actions { top: 20px; right: 10px; }
         }
     </style>
 </head>
@@ -1088,7 +1580,7 @@
 
     <div class="header">
         <h1>🚨 APREENSÕES DE ANIMAIS - COPPA</h1>
-        <p>Controle de Apreensões de Animais Silvestres</p>
+        <p>Sistema Avançado de Controle de Apreensões de Animais Silvestres</p>
     </div>
 
     <div class="container">
@@ -1122,9 +1614,6 @@
             <h3>🎯 Painel de Controle</h3>
             <div class="control-panel">
                 <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-                    <button class="btn btn-success" onclick="app.ui.openModal()">
-                        ➕ Nova Apreensão
-                    </button>
                     <button class="btn btn-info" onclick="app.data.refreshData()">
                         🔄 Atualizar Dados
                     </button>
@@ -1304,7 +1793,7 @@
         </div>
     </div>
 
-    <button class="floating-action" onclick="app.ui.openModal()">+</button>
+    <button class="floating-action" onclick="app.data.refreshData()" title="Atualizar Dados">🔄</button>
 
     <script>
         // Initialize particles background
@@ -1546,7 +2035,11 @@
             async loadData() {
                 this.ui.showLoading();
                 try {
-                    this.apreensoes = await this.firebase.readAll();
+                    const rawData = await this.firebase.readAll();
+                    // NORMALIZAÇÃO FORÇADA AQUI
+                    console.log('🔄 Normalizando dados do Firebase...');
+                    this.apreensoes = window.speciesNormalizer ? 
+                        window.speciesNormalizer.normalizeAllData(rawData) : rawData;
                     this.ui.hideLoading();
                 } catch (error) {
                     console.error("Erro ao carregar dados:", error);
@@ -1932,6 +2425,23 @@
 
             createAnimalChart() {
                 const animalCounts = {};
+                
+                // Check if there are any records first
+                if (app.data.apreensoes.length === 0) {
+                    const ctx = document.getElementById('animalChart').getContext('2d');
+                    if (this.charts.animal) {
+                        this.charts.animal.destroy();
+                    }
+                    
+                    // Clear canvas and show message
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    ctx.font = '16px Inter';
+                    ctx.fillStyle = '#cbd5e1';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Nenhum dado disponível', ctx.canvas.width / 2, ctx.canvas.height / 2);
+                    return;
+                }
+                
                 app.data.apreensoes.forEach(apreensao => {
                     apreensao.animals.forEach(animal => {
                         animalCounts[animal.type] = (animalCounts[animal.type] || 0) + animal.quantity;
@@ -2069,6 +2579,23 @@
 
             createMonthChart() {
                 const monthCounts = {};
+                
+                // Check if there are any records first
+                if (app.data.apreensoes.length === 0) {
+                    const ctx = document.getElementById('monthChart').getContext('2d');
+                    if (this.charts.month) {
+                        this.charts.month.destroy();
+                    }
+                    
+                    // Clear canvas and show message
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    ctx.font = '16px Inter';
+                    ctx.fillStyle = '#cbd5e1';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Nenhum dado disponível', ctx.canvas.width / 2, ctx.canvas.height / 2);
+                    return;
+                }
+                
                 app.data.apreensoes.forEach(apreensao => {
                     const month = apreensao.date.substring(0, 7);
                     monthCounts[month] = (monthCounts[month] || 0) + 1;
@@ -2156,9 +2683,28 @@
 
             createMaterialChart() {
                 const materialCounts = {};
+                
+                // Check if there are any records first
+                if (app.data.apreensoes.length === 0) {
+                    const ctx = document.getElementById('materialChart').getContext('2d');
+                    if (this.charts.material) {
+                        this.charts.material.destroy();
+                    }
+                    
+                    // Clear canvas and show message
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    ctx.font = '16px Inter';
+                    ctx.fillStyle = '#cbd5e1';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Nenhum dado disponível', ctx.canvas.width / 2, ctx.canvas.height / 2);
+                    return;
+                }
+                
                 app.data.apreensoes.forEach(apreensao => {
                     apreensao.materials.forEach(material => {
-                        materialCounts[material.type] = (materialCounts[material.type] || 0) + material.quantity;
+                        // Normaliza o nome do material (primeira letra maiúscula)
+                        const normalizedType = material.type.charAt(0).toUpperCase() + material.type.slice(1).toLowerCase();
+                        materialCounts[normalizedType] = (materialCounts[normalizedType] || 0) + material.quantity;
                     });
                 });
                 
@@ -2212,8 +2758,18 @@
                             x: {
                                 ticks: {
                                     color: '#636e72',
-                                    font: { weight: '600' },
-                                    maxRotation: 45
+                                    font: { weight: '600', size: 11 },
+                                    maxRotation: 45,
+                                    minRotation: 45,
+                                    autoSkip: false,
+                                    callback: function(value, index, values) {
+                                        const label = this.getLabelForValue(value);
+                                        // Trunca labels muito grandes
+                                        if (label.length > 15) {
+                                            return label.substring(0, 12) + '...';
+                                        }
+                                        return label;
+                                    }
                                 },
                                 grid: {
                                     display: false
@@ -2223,6 +2779,14 @@
                         animation: {
                             duration: 2000,
                             easing: 'easeInOutQuart'
+                        },
+                        layout: {
+                            padding: {
+                                left: 10,
+                                right: 10,
+                                top: 10,
+                                bottom: 20
+                            }
                         }
                     }
                 });
@@ -2275,6 +2839,19 @@
 
             updateLocationStats() {
                 const locationCounts = {};
+                
+                // Check if there are any records first
+                if (app.data.apreensoes.length === 0) {
+                    const list = document.getElementById('location-list');
+                    list.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                            <div style="font-size: 3em; margin-bottom: 15px; opacity: 0.3;">📍</div>
+                            <p style="font-size: 1.1em;">Nenhuma localização registrada ainda.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
                 app.data.apreensoes.forEach(apreensao => {
                     const location = `${apreensao.city} - ${apreensao.neighborhood}`;
                     locationCounts[location] = (locationCounts[location] || 0) + 1;
@@ -2295,6 +2872,18 @@
 
             updateSpeciesAnalysis() {
                 const speciesData = {};
+                
+                // Check if there are any records first
+                if (app.data.apreensoes.length === 0) {
+                    const container = document.getElementById('species-analysis');
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                            <div style="font-size: 3em; margin-bottom: 15px; opacity: 0.3;">🦎</div>
+                            <p style="font-size: 1.1em;">Nenhum dado de espécies disponível ainda.</p>
+                        </div>
+                    `;
+                    return;
+                }
                 
                 app.data.apreensoes.forEach(apreensao => {
                     apreensao.animals.forEach(animal => {
@@ -2343,6 +2932,21 @@
                 const timeline = document.getElementById('timeline');
                 const filteredApreensoes = app.data.getFilteredData();
                 
+                // Check if there are any records
+                if (filteredApreensoes.length === 0) {
+                    timeline.innerHTML = `
+                        <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                            <div style="font-size: 4em; margin-bottom: 20px; opacity: 0.3;">📋</div>
+                            <h3 style="color: var(--text-primary); margin-bottom: 15px;">Nenhuma Apreensão Registrada</h3>
+                            <p style="font-size: 1.1em; line-height: 1.6;">
+                                Não há registros de apreensões no sistema ainda.<br>
+                                Os dados aparecerão aqui conforme forem inseridos no Firebase.
+                            </p>
+                        </div>
+                    `;
+                    return;
+                }
+                
                 // Sort by date and time in descending order (most recent first)
                 const sortedApreensoes = filteredApreensoes.sort((a, b) => {
                     const dateTimeA = new Date(`${a.date}T${a.time}`);
@@ -2383,7 +2987,9 @@
                             <div class="animal-list">
                                 ${apreensao.animals.map(animal => `
                                     <div class="animal-tag">
-                                        ${app.animals.animalIcons[animal.type]} ${animal.species} (${animal.quantity})
+                                        <span class="animal-icon">${app.animals.animalIcons[animal.type]}</span>
+                                        <span class="animal-species-name">${animal.species}</span>
+                                        <span class="animal-quantity">(${animal.quantity})</span>
                                     </div>
                                 `).join('')}
                             </div>
@@ -2426,15 +3032,6 @@
                                     </div>
                                 </div>
                             ` : ''}
-                            
-                            <div style="margin-top: 20px; display: flex; gap: 10px;">
-                                <button class="btn btn-warning" onclick="app.form.editApreensao('${apreensao.id}')" style="padding: 8px 20px; font-size: 0.9em;">
-                                    ✏️ Editar
-                                </button>
-                                <button class="btn btn-danger" onclick="app.form.deleteApreensao('${apreensao.id}')" style="padding: 8px 20px; font-size: 0.9em;">
-                                    🗑️ Excluir
-                                </button>
-                            </div>
                         </div>
                     `;
                 }).join('');
@@ -2700,9 +3297,9 @@
                     document.getElementById('date').value = now.toISOString().split('T')[0];
                     document.getElementById('time').value = now.toTimeString().slice(0, 5);
                     
-                    // Initialize with some sample data if empty
+                    // Show message if no data
                     if (app.data.apreensoes.length === 0) {
-                        this.ui.showToast('Sistema inicializado! Comece registrando uma nova apreensão.', 'info');
+                        this.ui.showToast('Nenhuma apreensão registrada ainda no sistema.', 'info');
                     }
                     
                     console.log('🚨 Sistema COPPA Premium iniciado com sucesso!');
@@ -2809,6 +3406,503 @@
                 });
             };
         }
+
+        // =============================================================================
+        // NORMALIZADOR DEFINITIVO DE ESPÉCIES - VERSÃO 2.0
+        // =============================================================================
+
+        class SpeciesNormalizer {
+            constructor() {
+                // Mapa completo de normalização
+                this.speciesMap = {
+                    // Tico-tico (espécie comum)
+                    'ticotico': 'Tico-tico',
+                    'tico-tico': 'Tico-tico',
+                    'tico tico': 'Tico-tico',
+                    'tico_tico': 'Tico-tico',
+                    'ticó-ticó': 'Tico-tico',
+                    'tico.tico': 'Tico-tico',
+                    'tico,tico': 'Tico-tico',
+                    'ticotico2': 'Tico-tico',
+                    'tico-tico2': 'Tico-tico',
+                    'tico tico 2': 'Tico-tico',
+                    'tico  tico': 'Tico-tico',
+                    'tico   tico': 'Tico-tico',
+                    
+                    // Tico-tico-cinza (ESPÉCIE DIFERENTE!)
+                    'tico tico cinza': 'Tico-tico-cinza',
+                    'tico-tico cinza': 'Tico-tico-cinza',
+                    'tico-tico-cinza': 'Tico-tico-cinza',
+                    'ticotico cinza': 'Tico-tico-cinza',
+                    'tico tico cinzento': 'Tico-tico-cinza',
+                    'tico-tico cinzento': 'Tico-tico-cinza',
+                    'tico tico cinza': 'Tico-tico-cinza',
+                    
+                    // Bem-te-vi
+                    'bemtevi': 'Bem-te-vi',
+                    'bem-te-vi': 'Bem-te-vi',
+                    'bem te vi': 'Bem-te-vi',
+                    'bem_te_vi': 'Bem-te-vi',
+                    'bentevi': 'Bem-te-vi',
+                    'bem.te.vi': 'Bem-te-vi',
+                    
+                    // Sabiá
+                    'sabiá': 'Sabiá',
+                    'sabia': 'Sabiá',
+                    'sabiá-laranjeira': 'Sabiá-laranjeira',
+                    'sabia laranjeira': 'Sabiá-laranjeira',
+                    'sabiá laranjeira': 'Sabiá-laranjeira',
+                    'sabia-laranjeira': 'Sabiá-laranjeira',
+                    
+                    // Canário
+                    'canário': 'Canário',
+                    'canario': 'Canário',
+                    'canário-da-terra': 'Canário-da-terra',
+                    'canario da terra': 'Canário-da-terra',
+                    'canário da terra': 'Canário-da-terra',
+                    'canario-da-terra': 'Canário-da-terra',
+                    
+                    // Curió
+                    'curió': 'Curió',
+                    'curio': 'Curió',
+                    'curiò': 'Curió',
+                    'curìó': 'Curió',
+                    
+                    // Coleirinha/Coleiro
+                    'coleirinha': 'Coleirinha',
+                    'coleirinho': 'Coleirinha',
+                    'coleira': 'Coleirinha',
+                    'coleiro': 'Coleirinha',
+                    'coleirinha2': 'Coleirinha',
+                    
+                    // Azulão
+                    'azulão': 'Azulão',
+                    'azulao': 'Azulão',
+                    'azulao verdadeiro': 'Azulão',
+                    'azulão verdadeiro': 'Azulão',
+                    
+                    // Sangue de boi
+                    'sangue de boi': 'Sangue de boi',
+                    'sangue-de-boi': 'Sangue de boi',
+                    'sanguedeboi': 'Sangue de boi',
+                    'sangue_de_boi': 'Sangue de boi',
+                    'sangue de boi1': 'Sangue de boi',
+                    
+                    // Papa-capim
+                    'papacapim': 'Papa-capim',
+                    'papa-capim': 'Papa-capim',
+                    'papa capim': 'Papa-capim',
+                    'papa_capim': 'Papa-capim',
+                    
+                    // Pássaro-preto
+                    'passaro preto': 'Pássaro-preto',
+                    'pássaro preto': 'Pássaro-preto',
+                    'passaro-preto': 'Pássaro-preto',
+                    'pássaro-preto': 'Pássaro-preto',
+                    
+                    // Cardeal
+                    'cardeal': 'Cardeal',
+                    'cardinal': 'Cardeal',
+                    'cardenal': 'Cardeal',
+                    
+                    // Outros comuns
+                    'caboclinho': 'Caboclinho',
+                    'patativa': 'Patativa',
+                    'pintassilgo': 'Pintassilgo',
+                    'pintassilva': 'Pintassilgo',
+                    'canário belga': 'Canário Belga',
+                    'canario belga': 'Canário Belga',
+                    
+                    // Psitacídeos
+                    'papagaio': 'Papagaio',
+                    'papagaio verdadeiro': 'Papagaio-verdadeiro',
+                    'papagaio-verdadeiro': 'Papagaio-verdadeiro',
+                    'periquito': 'Periquito',
+                    'periquito-rico': 'Periquito-rico',
+                    'jandaia': 'Jandaia',
+                    'maritaca': 'Maritaca',
+                    'maitaca': 'Maritaca',
+                    
+                    // Répteis
+                    'jiboia': 'Jiboia',
+                    'jibóia': 'Jiboia',
+                    'cobra-cipó': 'Cobra-cipó',
+                    'cobra cipó': 'Cobra-cipó',
+                    'cobra cipo': 'Cobra-cipó',
+                    'iguana': 'Iguana',
+                    'teiú': 'Teiú',
+                    'teiu': 'Teiú',
+                    'jabuti': 'Jabuti',
+                    'jabutí': 'Jabuti',
+                    'cágado': 'Cágado',
+                    'cagado': 'Cágado'
+                };
+                
+                this.cache = new Map();
+            }
+            
+            // Normaliza uma string removendo acentos, números e padronizando
+            normalizeString(str) {
+                if (!str) return '';
+                
+                return str.toString()
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+                    .replace(/[0-9]/g, '') // Remove números
+                    .replace(/[^\w\s-]/g, ' ') // Remove caracteres especiais exceto hífen
+                    .replace(/\s+/g, ' ') // Normaliza espaços múltiplos para um espaço
+                    .trim();
+            }
+            
+            // Capitaliza palavras corretamente
+            capitalize(str) {
+                if (!str) return '';
+                
+                // Palavras que devem ficar em minúscula
+                const lowercaseWords = ['de', 'da', 'do', 'das', 'dos'];
+                
+                return str.split(' ').map((part, index) => {
+                    // Trata hífens dentro de cada parte
+                    if (part.includes('-')) {
+                        return part.split('-').map((word, idx) => {
+                            if (idx > 0 && lowercaseWords.includes(word.toLowerCase())) {
+                                return word.toLowerCase();
+                            }
+                            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                        }).join('-');
+                    }
+                    
+                    // Palavras normais
+                    if (index > 0 && lowercaseWords.includes(part.toLowerCase())) {
+                        return part.toLowerCase();
+                    }
+                    return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+                }).join(' ');
+            }
+            
+            // Normaliza uma espécie
+            normalizeSpecies(species) {
+                if (!species) return '';
+                
+                // Verifica cache
+                if (this.cache.has(species)) {
+                    return this.cache.get(species);
+                }
+                
+                // Normaliza a string
+                const normalized = this.normalizeString(species);
+                
+                // Busca no mapa de espécies
+                let result = this.speciesMap[normalized];
+                
+                // Se não encontrou, tenta sem espaços/hífens
+                if (!result) {
+                    const withoutSpaces = normalized.replace(/[\s-]/g, '');
+                    result = this.speciesMap[withoutSpaces];
+                }
+                
+                // Se ainda não encontrou, capitaliza a versão normalizada
+                if (!result) {
+                    result = this.capitalize(normalized);
+                }
+                
+                // Salva no cache
+                this.cache.set(species, result);
+                
+                return result;
+            }
+            
+            // Normaliza um array de animais
+            normalizeAnimals(animals) {
+                if (!Array.isArray(animals)) return animals;
+                
+                return animals.map(animal => ({
+                    ...animal,
+                    species: this.normalizeSpecies(animal.species)
+                }));
+            }
+            
+            // Normaliza todas as apreensões
+            normalizeAllData(apreensoes) {
+                if (!Array.isArray(apreensoes)) return apreensoes;
+                
+                return apreensoes.map(apreensao => ({
+                    ...apreensao,
+                    animals: this.normalizeAnimals(apreensao.animals)
+                }));
+            }
+        }
+
+        // Criar instância global do normalizador
+        window.speciesNormalizer = new SpeciesNormalizer();
+
+        // Interceptar e modificar as funções críticas do sistema
+        (function() {
+            console.log('🔧 Instalando normalizador de espécies...');
+            
+            // Aguardar app estar disponível
+            function installNormalizer() {
+                if (!window.app || !window.app.data) {
+                    setTimeout(installNormalizer, 100);
+                    return;
+                }
+                
+                // 1. Interceptar loadData
+                const originalLoadData = window.app.data.loadData.bind(window.app.data);
+                window.app.data.loadData = async function() {
+                    console.log('📥 Carregando e normalizando dados...');
+                    await originalLoadData();
+                    window.app.data.apreensoes = window.speciesNormalizer.normalizeAllData(window.app.data.apreensoes);
+                    console.log('✅ Dados normalizados com sucesso!');
+                };
+                
+                // 2. Interceptar handleSubmit para normalizar na entrada
+                if (window.app.form) {
+                    const originalHandleSubmit = window.app.form.handleSubmit.bind(window.app.form);
+                    window.app.form.handleSubmit = async function(event) {
+                        // Normalizar animais antes de salvar
+                        if (window.app.animals.currentAnimals) {
+                            window.app.animals.currentAnimals = window.speciesNormalizer.normalizeAnimals(window.app.animals.currentAnimals);
+                        }
+                        return originalHandleSubmit(event);
+                    };
+                }
+                
+                // 3. Interceptar addAnimal para normalizar ao adicionar
+                if (window.app.animals) {
+                    const originalAddAnimal = window.app.animals.addAnimal.bind(window.app.animals);
+                    window.app.animals.addAnimal = function() {
+                        originalAddAnimal();
+                        // Normalizar imediatamente após adicionar
+                        if (window.app.animals.currentAnimals.length > 0) {
+                            const lastIndex = window.app.animals.currentAnimals.length - 1;
+                            const lastAnimal = window.app.animals.currentAnimals[lastIndex];
+                            lastAnimal.species = window.speciesNormalizer.normalizeSpecies(lastAnimal.species);
+                            window.app.animals.updateAnimalList();
+                        }
+                    };
+                }
+                
+                // 4. Normalizar dados já carregados
+                if (window.app.data.apreensoes && window.app.data.apreensoes.length > 0) {
+                    console.log('🔄 Normalizando dados existentes...');
+                    window.app.data.apreensoes = window.speciesNormalizer.normalizeAllData(window.app.data.apreensoes);
+                    if (window.app.dashboard) {
+                        window.app.dashboard.updateDashboard();
+                    }
+                }
+                
+                console.log('✅ Normalizador instalado com sucesso!');
+                
+                // Adicionar botão de teste
+                setTimeout(() => {
+                    const controlPanel = document.querySelector('.control-panel');
+                    if (controlPanel) {
+                        const testButton = document.createElement('button');
+                        testButton.className = 'btn btn-success';
+                        testButton.innerHTML = '🧪 Testar Normalização';
+                        testButton.onclick = testNormalization;
+                        controlPanel.querySelector('div').appendChild(testButton);
+                        
+                        // Botão para forçar normalização
+                        const normalizeButton = document.createElement('button');
+                        normalizeButton.className = 'btn btn-danger';
+                        normalizeButton.innerHTML = '🔧 Normalizar Dados';
+                        normalizeButton.onclick = forceNormalization;
+                        controlPanel.querySelector('div').appendChild(normalizeButton);
+                    }
+                }, 1000);
+            }
+            
+            // Função para forçar normalização
+            window.forceNormalization = function() {
+                if (!window.app || !window.app.data || !window.app.data.apreensoes) {
+                    window.app.ui.showToast('❌ Dados não carregados', 'error');
+                    return;
+                }
+                
+                console.log('🔧 Forçando normalização de todos os dados...');
+                
+                // Mostra antes
+                const before = {};
+                window.app.data.apreensoes.forEach(apreensao => {
+                    apreensao.animals.forEach(animal => {
+                        before[animal.species] = (before[animal.species] || 0) + animal.quantity;
+                    });
+                });
+                console.log('Antes:', before);
+                
+                // Aplica normalização
+                window.app.data.apreensoes = window.speciesNormalizer.normalizeAllData(window.app.data.apreensoes);
+                
+                // Mostra depois
+                const after = {};
+                window.app.data.apreensoes.forEach(apreensao => {
+                    apreensao.animals.forEach(animal => {
+                        after[animal.species] = (after[animal.species] || 0) + animal.quantity;
+                    });
+                });
+                console.log('Depois:', after);
+                
+                // Atualiza dashboard
+                window.app.dashboard.updateDashboard();
+                
+                window.app.ui.showToast('✅ Dados normalizados! Verifique os gráficos.', 'success');
+            };
+            
+            // Função de teste
+            window.testNormalization = function() {
+                const tests = [
+                    'ticotico', 'Tico-tico', 'TICO TICO', 'tico_tico', 'TicoTico2',
+                    'Tico Tico', 'tico  tico', 'TICO  TICO', 'Tico   Tico',
+                    'bem te vi', 'Bem-te-vi', 'BEMTEVI', 'bem.te.vi',
+                    'sabiá', 'SABIÁ', 'sabia', 'Sabia',
+                    'sangue de boi', 'SANGUE-DE-BOI', 'sanguedeboi', 'Sangue de Boi1',
+                    'coleirinha', 'Coleirinha2', 'COLEIRINHO', 'coleira'
+                ];
+                
+                console.log('🧪 Testando normalização:');
+                tests.forEach(test => {
+                    const normalized = window.speciesNormalizer.normalizeSpecies(test);
+                    console.log(`"${test}" → "${normalized}"`);
+                });
+                
+                if (window.app && window.app.ui) {
+                    window.app.ui.showToast('✅ Teste concluído! Verifique o console.', 'success');
+                }
+            };
+            
+            // Função para debug e correção manual
+            window.debugSpecies = function() {
+                console.log('=== ANÁLISE DE ESPÉCIES ===');
+                const especies = {};
+                let totalAnimais = 0;
+                
+                app.data.apreensoes.forEach((apreensao, idx) => {
+                    console.log(`\nApreensão ${idx + 1} - ${apreensao.date}:`);
+                    apreensao.animals.forEach(animal => {
+                        console.log(`  - ${animal.species}: ${animal.quantity}`);
+                        especies[animal.species] = (especies[animal.species] || 0) + animal.quantity;
+                        totalAnimais += animal.quantity;
+                    });
+                });
+                
+                console.log('\n=== RESUMO POR ESPÉCIE ===');
+                console.table(especies);
+                console.log(`TOTAL DE ANIMAIS: ${totalAnimais}`);
+                
+                return especies;
+            };
+            
+            // Função para corrigir manualmente espécies específicas
+            window.fixSpeciesNames = function() {
+                console.log('🔧 Corrigindo nomes de espécies...');
+                
+                app.data.apreensoes.forEach(apreensao => {
+                    apreensao.animals.forEach(animal => {
+                        const original = animal.species;
+                        let normalized = animal.species
+                            .toLowerCase()
+                            .normalize('NFD')
+                            .replace(/[\u0300-\u036f]/g, '')
+                            .replace(/[0-9]/g, '')
+                            .replace(/\s+/g, ' ')
+                            .trim();
+                        
+                        // Regras específicas mantendo espécies diferentes separadas
+                        if (normalized.includes('tico') && normalized.includes('cinz')) {
+                            animal.species = 'Tico-tico-cinza';
+                        } else if (normalized === 'tico tico' || normalized === 'ticotico' || normalized === 'tico-tico') {
+                            animal.species = 'Tico-tico';
+                        } else if (normalized === 'bem te vi' || normalized === 'bemtevi' || normalized === 'bem-te-vi') {
+                            animal.species = 'Bem-te-vi';
+                        } else if (normalized === 'sabia' || normalized === 'sabiá') {
+                            animal.species = 'Sabiá';
+                        } else if (normalized.includes('sabia') && normalized.includes('laranj')) {
+                            animal.species = 'Sabiá-laranjeira';
+                        } else if (normalized.includes('sabia') && normalized.includes('praia')) {
+                            animal.species = 'Sabiá-da-praia';
+                        } else if (normalized === 'coleirinha' || normalized === 'coleira' || normalized === 'coleiro') {
+                            animal.species = 'Coleirinha';
+                        } else if (normalized.includes('sangue') && normalized.includes('boi')) {
+                            animal.species = 'Sangue de boi';
+                        } else if (normalized.includes('canario') && normalized.includes('terra')) {
+                            animal.species = 'Canário-da-terra';
+                        } else if (normalized.includes('canario') && normalized.includes('belga')) {
+                            animal.species = 'Canário-belga';
+                        } else if (normalized === 'canario' || normalized === 'canário') {
+                            animal.species = 'Canário';
+                        } else if (normalized.includes('papa') && normalized.includes('capim')) {
+                            animal.species = 'Papa-capim';
+                        } else if (normalized === 'azulao' || normalized === 'azulão') {
+                            animal.species = 'Azulão';
+                        } else if (normalized === 'curio' || normalized === 'curió') {
+                            animal.species = 'Curió';
+                        } else if (normalized.includes('passaro') && normalized.includes('preto')) {
+                            animal.species = 'Pássaro-preto';
+                        }
+                        
+                        if (original !== animal.species) {
+                            console.log(`✓ "${original}" → "${animal.species}"`);
+                        }
+                    });
+                });
+                
+                // Atualiza dashboard
+                app.dashboard.updateDashboard();
+                
+                // Mostra resultado
+                console.log('\n=== RESULTADO FINAL ===');
+                window.debugSpecies();
+                
+                app.ui.showToast('✅ Espécies corrigidas! Verifique o console.', 'success');
+            };
+            
+            // Iniciar instalação
+            installNormalizer();
+        })();
+
+        console.log('✅ Script de normalização carregado!');
+
+        // ===== SUPREME DASHBOARD =====
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                // Add collapse to all cards
+                document.querySelectorAll('.card').forEach(card => {
+                    if (!card.querySelector('.collapse-btn')) {
+                        card.classList.add('collapsible-card');
+                        
+                        const btn = document.createElement('button');
+                        btn.className = 'collapse-btn';
+                        btn.innerHTML = '▼';
+                        btn.onclick = () => {
+                            card.classList.toggle('collapsed');
+                            btn.innerHTML = card.classList.contains('collapsed') ? '▶' : '▼';
+                        };
+                        
+                        const content = Array.from(card.children).slice(1);
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'card-content';
+                        content.forEach(child => wrapper.appendChild(child));
+                        card.appendChild(wrapper);
+                        card.insertBefore(btn, card.firstChild);
+                    }
+                });
+
+                // Quick actions
+                const quickActions = document.createElement('div');
+                quickActions.className = 'quick-actions';
+                quickActions.innerHTML = `
+                    <button class="quick-action-btn" onclick="app.ui.openModal()" title="Nova Apreensão">➕</button>
+                    <button class="quick-action-btn" onclick="app.export.generatePDF()" title="PDF">📄</button>
+                    <button class="quick-action-btn" onclick="app.export.exportCSV()" title="Excel">📊</button>
+                    <button class="quick-action-btn" onclick="app.data.refreshData()" title="Atualizar">🔄</button>
+                    <button class="quick-action-btn" onclick="document.documentElement.requestFullscreen()" title="Tela Cheia">📺</button>
+                `;
+                document.body.appendChild(quickActions);
+            }, 2500);
+        });
     </script>
 </body>
 </html>
